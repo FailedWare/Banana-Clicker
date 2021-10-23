@@ -126,11 +126,6 @@
                 }
                 clicker = clicker1;
             
-            for(i in clicker.badges){
-                if(clicker1.badges[i] == null || clicker.badges[i].text != clicker1.badges[i].text) {
-                    clicker1.badges[i] = clicker.badges[i]
-                }
-            }
             clicker = clicker1
             }
             update_upgrades();
@@ -166,6 +161,5 @@
     <div id="upgrades">
 
     </div>
-    <br>
     <div id="Badge" style="width: 400px; height:300px; overflow:scroll"></div>
 </body>
