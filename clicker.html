@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<head>
+    <title>Banana Clicker</title>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+    <script>
+     console.log("I hope you can find out how to cheat bananas!")
+     console.log("=============================================")
+     console.log("Version 1.6 | Created by FailedWare")
+    </script>
+
+    <script>
+        var clicker = {
+            bananas:0,
+            upgrades: {
+                banana_farm:{
+                    amount:0,
+                    cost:10,
+                    bps:1,
+                    name:"Banana Farms"
+                },
+                banana_cloning:{
+                    amount:0,
+                    cost:100,
+                    bps:10,
+                    name:"Banana Cloning"
+                },
+                banana_temple:{
+                    amount:0,
+                    cost:500,
+                    bps:50,
+                    name:"Banana Temple"
+                },
+                banana_bank:{
+                    amount:0,
+                    cost:1000,
+                    bps:100,
+                    name:"Banana Bank"
+                },
+                banana_tower:{
+                    amount:0,
+                    cost:5000,
+                    bps:1000,
+                    name:"Banana Tower"
+                },
+                banana_portal:{
+                    amount:0,
+                    cost:10000,
+                    bps:10000,
+                    name:"Banana Portal"
+                },
+                banana_world:{
+                    amount:0,
+                    cost:100000,
+                    bps:100000,
+                    name:"Banana World"
+                },
+                banana_king:{
+                    amount:0,
+                    cost:1000000,
+                    bps:1000000,
+                    name:"Banana King"
+                },
+                banana_god:{
+                    amount:0,
+                    cost:10000000,
+                    bps:10000000,
+                    name:"Banana God"
+                },
+                banana_devil:{
+                    amount:0,
+                    cost:100000000,
+                    bps:100000000,
+                    name:"Banana Devil"
+                },
+                banana_moyai:{
+                    amount:0,
+                    cost:1000000000,
+                    bps:1000000000,
+                    name:"Banana Moyai"
+                },
+                banana_vortex:{
+                    amount:0,
+                    cost:10000000000,
+                    bps:10000000000,
+                    name:"Banana Vortex"
+                },
+                banana_galaxy:{
+                    amount:0,
+                    cost:10000000000000,
+                    bps:10000000000000,
+                    name:"Banana Galaxy"
+                },
+                banana_javaconsole:{
+                    amount:0,
+                    cost:1000000000000000,
+                    bps:1000000000000000,
+                    name:"Banana Java Console"
+                }
+            },
+            badges:[{req:"clicker.bananas>1",gotten:false,text:"Have a Banana"},{req:"clicker.bananas>9",gotten:false,text:"Banana Man I"}]
+        };
+        var delay = 0;
+        function thing_clicked(thing){
+            if(clicker.upgrades[thing].cost <= clicker.bananas){
+            clicker.bananas-= clicker.upgrades[thing].cost;
+            clicker.upgrades[thing].amount++
+            clicker.upgrades[thing].cost +=Math.round(clicker.upgrades[thing].cost*0.15)
+            update_upgrades();
+             }
+        }
+        function update_upgrades(){
+            document.querySelector("#upgrades").innerHTML="";
+            for(i in clicker.upgrades){
+                document.querySelector("#upgrades").innerHTML+= `<br> <button onclick="thing_clicked('${i}')">${clicker.upgrades
+                [i].name}</button> you have ${clicker.upgrades[i].amount}. Cost: ${clicker.upgrades[i].cost}`;
+            }
+        }
+        function updatecount(){
+            
+            if(Cookies.get("clicker") != null && Cookies.get("clicker") != "undefined"){
+                var Clicker1 = JSON.parse(Cookies.get("clicker"));
+                for(i in clicker.upgrades){
+                    if(clicker1.upgrades[i] == null){
+                        clicker1.upgrades[i] = clicker.upgrades[i];
+                    }
+                }
+                clicker = clicker1;
+            
+            for(i in clicker.badges){
+                if(clicker1.badges[i] == null || clicker.badges[i].text != clicker1.badges[i].text) {
+                    clicker1.badges[i] = clicker.badges[i]
+                }
+            }
+            clicker = clicker1
+            }
+            update_upgrades();
+            setInterval(() => {
+                for(i in clicker.upgrades){
+                    clicker.bananas+=clicker.upgrades[i].amount*clicker.upgrades[i].bps/20
+                }
+                for(i in clicker.badges){
+                    var b = new Function('return '+clicker.badges[i].req);
+                     if(b() && !clicker.badges[i].gotten){
+                        clicker.badges[i].gotten = true;
+                        document.querySelector("#badges").innerHTML+=`<br>BADGE REWARDED<br>${clicker.badges[i].text}`;
+                    }
+                }
+                document.querySelector("#bananas").innerHTML = "You have "+String(clicker.bananas).split(".")[0]+" Bananas";
+                delay++;
+                if (delay >= 40){
+                    Cookies.set("clicker",JSON.stringify(clicker), {expires: 100000})
+                    delay = 0;
+                }
+                },50);
+        }
+    </script>
+</head>
+
+<h1>Banana Clicker</h1>
+<small>Created by FailedWare | the most boring clicker game ever</small> 
+<img src=banana.jpg>
+<samll>Version 1.6: Put this on github</samll>
+<body onload="updatecount()">
+    <h1 id="bananas">You have 0 Bananas</h1>
+    <button onclick="clicker.bananas++">Get a Banana</button>
+    <div id="upgrades">
+
+    </div>
+    <div id="Badge" style="width: 400px; height:300px; overflow:scroll"></div>
+</body>
